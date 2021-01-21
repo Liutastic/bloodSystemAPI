@@ -1,0 +1,17 @@
+{
+  "name": "bloodsystemapi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Liutastic",
+  "license": "ISC",
+  "dependencies": {
+    "koa": "^2.13.1",
+    "koa-router": "^10.0.0",
+    "moment": "^2.29.1",
+    "mongoose": "^5.11.13"
+  }
+}
