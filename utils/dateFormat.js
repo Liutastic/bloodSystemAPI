@@ -1,7 +1,13 @@
-const moment = require(moment)
+// const dayjs = require("dayjs")
+
+const moment = require('dayjs')
 
 function formatDate(date, isCurrent = false) {
   return moment(date).format(`YYYY-MM-DD${isCurrent ? ' HH:mm:ss' : ''}`)
+}
+
+function formatDateRandom(date) {
+  return momenet(date).format(`YYYYMMDDHHmmss`)
 }
 
 function formatDateZn(date, isAcc = false) {
@@ -21,5 +27,6 @@ function formatDateZn(date, isAcc = false) {
 
 module.exports = {
   formatDate,
-  formatDateZn
+  formatDateZn,
+  formatDateRandom
 }

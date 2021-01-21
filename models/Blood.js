@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const dateFormat = require('../utils/dateFormat').formatDate
 const Schema = mongoose.Schema
 
-const bloodSchema = new Schema({
+const BloodSchema = new Schema({
   // 此处需要关联志愿者获取志愿者id和志愿者的血型
   volunteer: {
     type: mongoose.Schema.Types.ObjectId,
@@ -30,6 +30,7 @@ const bloodSchema = new Schema({
     required: true,
     min: 0
   },
+  // 是否合格
   isQualified: {
     type: Boolean,
     required: true,
@@ -46,3 +47,5 @@ const bloodSchema = new Schema({
     default: dateFormat(new Date())
   }
 })
+
+module.exports = blood = mongoose.model('bloods', BloodSchema)

@@ -45,3 +45,5 @@ const VolunteerSchema = new Schema({
     default: dateFormat(new Date())
   }
 })
+
+module.exports = Volunteer = mongoose.model('volunteers', VolunteerSchema)
