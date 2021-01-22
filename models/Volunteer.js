@@ -20,7 +20,7 @@ const VolunteerSchema = new Schema({
   },
   address: {
     type: String,
-    required: true,
+    required: false,
     minlength: 1,
     maxlength: 50
   },

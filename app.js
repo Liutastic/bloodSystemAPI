@@ -2,6 +2,7 @@ const koa = require('koa')
 const Router = require('koa-router')
 const mongoose = require('mongoose')
 const bodyParser = require('koa-bodyparser')
+const passport = require('koa-passport')
 
 const db = require('./config/keys').mongoURI
 
@@ -12,9 +13,9 @@ const router = new Router()
 
 app.use(bodyParser())
 
-// 引入users.js
+// 引入users.js路由
 const users = require('./routes/api/users')
-// 引入volunteer.js
+// 引入volunteer.js 路由
 const volunteers = require('./routes/api/volunteers')
 // 路由
 router.get('/', async ctx => {
@@ -31,10 +32,16 @@ mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
   .catch(err => {
     console.log(err)
   })
+app.use(passport.initialize())
+app.use(passport.session())
+
+require('./config/passport')(passport)
+// require('./config/passport')
 
 // 配置路由地址
-
 router.use('/api/user', users)
+router.use('/api/volunteer', volunteers)
+
 // 配置路由
 app.use(router.routes()).use(router.allowedMethods())
 

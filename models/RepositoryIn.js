@@ -25,8 +25,12 @@ const RepositoryInSchema = new Schema({
     type: Date,
     required: false,
     default: dateFormat(new Date())
-  }
+  },
   // 入库明细应该是血袋ID数组
+  blood: {
+    type: [mongoose.Schema.Types.ObjectId],
+    refs: 'Blood'
+  }
 })
 
 module.exports = RepositoryIn = mongoose.model('RepositoryIns', RepositoryInSchema)

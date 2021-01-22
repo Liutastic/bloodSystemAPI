@@ -17,9 +17,7 @@ const UserSchema = new Schema({
   },
   password: {
     type: String,
-    required: true,
-    minlength: 6,
-    maxlength: 16
+    required: true
   },
   // 手机号码
   phone: {
