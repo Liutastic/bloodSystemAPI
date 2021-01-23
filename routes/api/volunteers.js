@@ -1,7 +1,7 @@
 const Router = require('koa-router')
 const passport = require('koa-passport')
-// 解析url后的params
-// const url = require('url')
+// 引入时间格式化
+const formatDate = require('../../utils/dateFormat').formatDate
 const router = new Router()
 // 引入volunteer
 const Volunteer = require('../../models/Volunteer')
@@ -36,14 +36,14 @@ router.get('/page', async ctx => {
   const IDNoReg = new RegExp(query.IDNo)
   const findResult = await Volunteer.aggregate([
     {
-      $project: { 
-        name: 1, 
-        IDNo: 1, 
-        address: 1, 
-        phone: 1, 
-        bloodType: 1, 
+      $project: {
+        name: 1,
+        IDNo: 1,
+        address: 1,
+        phone: 1,
+        bloodType: 1,
         remark: 1,
-        createdAt: 1 
+        createdAt: 1
       }
     },
     {
@@ -52,11 +52,14 @@ router.get('/page', async ctx => {
         address: addReg,
         bloodType: bloodTypeReg,
         phone: phoneReg,
-        IDNo: IDNoReg
+        IDNo: IDNoReg,
+        isDelete: 0
       }
     }
   ])
-  console.log('findResult', findResult)
+  ctx.status = 200
+  ctx.body = findResult
+  // console.log('findResult', findResult)
 })
 
 /**
@@ -64,10 +67,11 @@ router.get('/page', async ctx => {
  * @desc 新增一个志愿者
  * @access private
  */
-router.post('/add', passport.authenticate('jwt', { session: false }), async ctx => {
-  console.log(validateVolunteerInput(ctx.request.body))
+//passport.authenticate('jwt', { session: false }), 
+router.post('/add', async ctx => {
+  // console.log(validateVolunteerInput(ctx.request.body))
   const { errors, isValid } = validateVolunteerInput(ctx.request.body)
-  console.log('ctx.request.body', ctx.request.body)
+  // console.log('ctx.request.body', ctx.request.body)
   if (!isValid) {
     ctx.status = 400
     ctx.body = errors
@@ -91,7 +95,7 @@ router.post('/add', passport.authenticate('jwt', { session: false }), async ctx 
       // 时间 数据库默认生成
       // createdAt: ctx.request.body.createdAt,
     })
-    console.log('newVolunteer', newVolunteer)
+    // console.log('newVolunteer', newVolunteer)
     await newVolunteer
       .save()
       .then(volunteer => {
@@ -108,15 +112,41 @@ router.post('/add', passport.authenticate('jwt', { session: false }), async ctx 
  * @access private
  */
 // passport.authenticate('jwt', { session: false }),
-router.post('/update', ctx => {
-  // const { errors, isValid } = validateVolunteerInput(ctx.request.body)
-  // if (!isValid) {
-  //   ctx.status = 400
-  //   ctx.body = errors
-  //   return 
-  // }
-  console.log(ctx.request)
+router.post('/update', async ctx => {
+  const body = ctx.request.body
+  const id = ctx.request.body.id
+  delete body.id
+  // console.log('body', body)
+  // 当查找条件(id)存在的时候才执行修改操作
+  try {
+    const updateResult = await Volunteer.findByIdAndUpdate(id, body)
+    if (updateResult) {
+      // updateResult.createdAt = formatDate(updateResult.createdAt, true)
+      ctx.status = 200
+      ctx.body = updateResult
+    } else {
+      ctx.status = 400
+      ctx.response.status = 400
+      ctx.response.message = '数据库中无该条数据'
+      ctx.body = {
+        msg: '修改失败'
+      }
+    }
+  } catch (err) {
+    
+  }
+  // console.log('updateResult', updateResult)
 
+})
+
+/**
+ * @route /api/volunteer/delete
+ * @description 删除一个志愿者
+ * @access private
+ */
+// passport.authenticate('jwt', { session: false }),
+router.post('/delete', async ctx => {
+  console.log(ctx.body)
 })
 
 module.exports = router.routes()

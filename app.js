@@ -5,6 +5,7 @@ const bodyParser = require('koa-bodyparser')
 const passport = require('koa-passport')
 
 const db = require('./config/keys').mongoURI
+const responseFormatter = require('./middlewares/responseFormatter')
 
 // 实例化koa
 
@@ -12,7 +13,7 @@ const app = new koa()
 const router = new Router()
 
 app.use(bodyParser())
-
+app.use(responseFormatter)
 // 引入users.js路由
 const users = require('./routes/api/users')
 // 引入volunteer.js 路由
