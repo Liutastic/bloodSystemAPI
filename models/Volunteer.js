@@ -1,8 +1,8 @@
 const mongoose = require('mongoose')
-const dateFormat = require('../utils/dateFormat').formatDate
+const formatDate = require('../utils/dateFormat').formatDate
 
 const Schema = mongoose.Schema
-
+const date = formatDate(new Date(), true)
 // 实例化数据模板
 const VolunteerSchema = new Schema({
   // 志愿者姓名
@@ -40,9 +40,9 @@ const VolunteerSchema = new Schema({
     maxlength: 100
   },
   createdAt: {
-    type: Date,
+    type: String,
     required: false, 
-    default: dateFormat(new Date())
+    default: date
   }
 })
 

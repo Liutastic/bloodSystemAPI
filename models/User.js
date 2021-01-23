@@ -3,10 +3,10 @@
  */
 
 const mongoose = require('mongoose')
-const dateFormat = require('../utils/dateFormat').formatDate
+const formatDate = require('../utils/dateFormat').formatDate
 
 const Schema = mongoose.Schema
-
+const date = formatDate(new Date())
 const UserSchema = new Schema({
   // 真实姓名
   username: {
@@ -24,7 +24,13 @@ const UserSchema = new Schema({
     type: String,
     required: false, 
     match: /^1(3[0-9]|5[0-3,5-9]|7[1-3,5-8]|8[0-9])\d{8}$/
-  }
+  },
+  createdAt: {
+    type: String,
+    require: false,
+    // default: new Date()
+    default: date
+  } 
 })
 
 module.exports = User = mongoose.model('users', UserSchema)

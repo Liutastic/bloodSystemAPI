@@ -42,7 +42,7 @@ const BloodSchema = new Schema({
     maxlength: 100
   },
   createdAt: {
-    type: Date,
+    type: String,
     required: false, 
     default: dateFormat(new Date())
   }

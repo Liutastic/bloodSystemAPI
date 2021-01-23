@@ -22,7 +22,7 @@ const RepositoryInSchema = new Schema({
     maxlength: 10
   },
   createdAt: {
-    type: Date,
+    type: String,
     required: false,
     default: dateFormat(new Date())
   },

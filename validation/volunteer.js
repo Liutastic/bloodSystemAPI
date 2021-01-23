@@ -3,11 +3,9 @@ const isEmpty = require('./isEmpty')
 const vUtils = require('./validatorUtils')
 
 module.exports = function validateVolunteerInput(data) {
-  let errors = {
-    msg: ''
-  }
+  let errors = {}
 
-  data.name = !data.name ? '' : data.name
+  data.name = !data.name ? '' : data.name.trim()
   data.IDNo = !data.IDNo ? '' : data.IDNo
   data.address = !data.address ? '未知' : data.address
   data.phone = !data.phone ? '' : data.phone
@@ -19,10 +17,15 @@ module.exports = function validateVolunteerInput(data) {
     errors.msg = '名字不能为空'
   }
 
-  if (!Validator.isLength(data.name.trim()), { min: 1, max: 10 }) {
-    console.log('volunteerValidator', data.name)
+  if (!Validator.isLength(data.name, { min: 1, max: 10 })) {
+    console.log('volunteerValidator', data.name.length)
     errors.msg = '名字的长度介于1到10位之间'
   }
+  // if(data.name.length > 10 || data.name.length < 1) {
+  //   errors.msg = '名字的长度介于1到10位之间'
+
+  // }
+
 
   if (Validator.isEmpty(data.IDNo)) {
     errors.msg = '身份证不能为空'

@@ -1,9 +1,11 @@
 const Router = require('koa-router')
 const passport = require('koa-passport')
+// 解析url后的params
+// const url = require('url')
 const router = new Router()
 // 引入volunteer
 const Volunteer = require('../../models/Volunteer')
-// 引入校验规则
+// 引入validator校验规则
 const validateVolunteerInput = require('../../validation/volunteer')
 
 /**
@@ -17,15 +19,55 @@ router.get('/test', async ctx => {
     msg: 'volunteer works'
   }
 })
+
 /**
- * @route POST /api/volunteer/add
+ * @route GET /api/volunteer/page
+ * @description 查找志愿者(支持模糊查找)
+ * @access private
+ */
+// passport.authenticate('jwt', { session: false }),
+router.get('/page', async ctx => {
+  const query = ctx.request.query
+  // 模糊查询正则
+  const nameReg = new RegExp(query.name)
+  const addReg = new RegExp(query.address)
+  const bloodTypeReg = new RegExp(query.bloodType)
+  const phoneReg = new RegExp(query.phone)
+  const IDNoReg = new RegExp(query.IDNo)
+  const findResult = await Volunteer.aggregate([
+    {
+      $project: { 
+        name: 1, 
+        IDNo: 1, 
+        address: 1, 
+        phone: 1, 
+        bloodType: 1, 
+        remark: 1,
+        createdAt: 1 
+      }
+    },
+    {
+      $match: {
+        name: nameReg,
+        address: addReg,
+        bloodType: bloodTypeReg,
+        phone: phoneReg,
+        IDNo: IDNoReg
+      }
+    }
+  ])
+  console.log('findResult', findResult)
+})
+
+/**
+ * @route POST /api/volunteer/add 
  * @desc 新增一个志愿者
  * @access private
  */
 router.post('/add', passport.authenticate('jwt', { session: false }), async ctx => {
   console.log(validateVolunteerInput(ctx.request.body))
   const { errors, isValid } = validateVolunteerInput(ctx.request.body)
-  // console.log('ctx.request.body', ctx.request.body)
+  console.log('ctx.request.body', ctx.request.body)
   if (!isValid) {
     ctx.status = 400
     ctx.body = errors
@@ -59,6 +101,22 @@ router.post('/add', passport.authenticate('jwt', { session: false }), async ctx 
         console.log(err)
       })
   }
+})
+/**
+ * @route POST /api/volunteer/update
+ * @description 修改一个志愿者
+ * @access private
+ */
+// passport.authenticate('jwt', { session: false }),
+router.post('/update', ctx => {
+  // const { errors, isValid } = validateVolunteerInput(ctx.request.body)
+  // if (!isValid) {
+  //   ctx.status = 400
+  //   ctx.body = errors
+  //   return 
+  // }
+  console.log(ctx.request)
+
 })
 
 module.exports = router.routes()
