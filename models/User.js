@@ -6,6 +6,8 @@ const mongoose = require('mongoose')
 const formatDate = require('../utils/dateFormat').formatDate
 
 const Schema = mongoose.Schema
+mongoose.set('useFindAndModify', false)
+
 const date = formatDate(new Date())
 const UserSchema = new Schema({
   // 真实姓名

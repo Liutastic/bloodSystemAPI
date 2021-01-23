@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const generateRandom = require('../utils/generateRandom')
 const dateFormat = require('../utils/dateFormat').formatDate
 const Schema = mongoose.Schema
+mongoose.set('useFindAndModify', false)
 
 const RepositoryInSchema = new Schema({
   ReInNum: {

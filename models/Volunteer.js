@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const formatDate = require('../utils/dateFormat').formatDate
 
 const Schema = mongoose.Schema
+mongoose.set('useFindAndModify', false)
 const date = formatDate(new Date(), true)
 // 实例化数据模板
 const VolunteerSchema = new Schema({

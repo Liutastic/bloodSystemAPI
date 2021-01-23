@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const dateFormat = require('../utils/dateFormat').formatDate
 const Schema = mongoose.Schema
+mongoose.set('useFindAndModify', false)
 
 const BloodSchema = new Schema({
   // 此处需要关联志愿者获取志愿者id和志愿者的血型
