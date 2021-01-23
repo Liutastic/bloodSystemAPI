@@ -146,7 +146,25 @@ router.post('/update', async ctx => {
  */
 // passport.authenticate('jwt', { session: false }),
 router.post('/delete', async ctx => {
-  console.log(ctx.body)
+  const id = ctx.request.body.id
+  // 当查找条件(id)存在的时候才执行修改操作
+  try {
+    const updateResult = await Volunteer.findByIdAndUpdate(id, {isDelete: 1})
+    if (updateResult) {
+      // updateResult.createdAt = formatDate(updateResult.createdAt, true)
+      ctx.status = 200
+      ctx.body = updateResult
+    } else {
+      ctx.status = 400
+      ctx.response.status = 400
+      ctx.response.message = '数据库中无该条数据'
+      ctx.body = {
+        msg: '删除失败'
+      }
+    }
+  } catch (err) {
+    
+  }
 })
 
 module.exports = router.routes()
