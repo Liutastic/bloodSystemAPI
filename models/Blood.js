@@ -42,6 +42,12 @@ const BloodSchema = new Schema({
     required: false,
     maxlength: 100
   },
+  isDelete: {
+    type: Number,
+    required: false, 
+    select: false,
+    default: 0
+  },
   createdAt: {
     type: String,
     required: false, 

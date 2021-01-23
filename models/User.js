@@ -27,6 +27,17 @@ const UserSchema = new Schema({
     required: false, 
     match: /^1(3[0-9]|5[0-3,5-9]|7[1-3,5-8]|8[0-9])\d{8}$/
   },
+  isDelete: {
+    type: Number,
+    required: false, 
+    select: false,
+    default: 0
+  },
+  avatar: {
+    type: String,
+    require: false,
+    default: 'https://fakeimg.pl/200x200/?text=iamavatar'
+  },
   createdAt: {
     type: String,
     require: false,

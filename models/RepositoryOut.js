@@ -40,7 +40,17 @@ const RepositoryOutSchema = new Schema({
     type: String,
     required: false,
     default: dateFormat(new Date())
-  }
+  },
+  isDelete: {
+    type: Number,
+    required: false, 
+    select: false,
+    default: 0
+  },
+  blood: {
+    type: [mongoose.Schema.Types.ObjectId],
+    refs: 'Blood'
+  },
   // 出库明细应该是血袋ID数组
 })
 

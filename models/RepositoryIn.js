@@ -31,7 +31,13 @@ const RepositoryInSchema = new Schema({
   blood: {
     type: [mongoose.Schema.Types.ObjectId],
     refs: 'Blood'
-  }
+  },
+  isDelete: {
+    type: Number,
+    required: false, 
+    select: false,
+    default: 0
+  },
 })
 
 module.exports = RepositoryIn = mongoose.model('RepositoryIns', RepositoryInSchema)
