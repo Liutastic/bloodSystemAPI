@@ -1,4 +1,4 @@
-const formatDate = require('../utils/dateFormat')
+const formatDate = require('../utils/dateFormat').formatDate
 
 let responseFormatter = async (ctx, next) => {
   //先去执行路由
