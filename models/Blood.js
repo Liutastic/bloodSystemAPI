@@ -11,12 +11,13 @@ const BloodSchema = new Schema({
   },
   bloodVolume: {
     type: Number,
-    required: true
+    required: true,
+    default: 0
   },
   drawDate: {
     type: String,
-    required: true,
-    match: /^\d{4,4}-\d{2,2}-\d{2,2}[ ]\d{2,2}:\d{2,2}:\d{2,2}/
+    required: true
+    // match: /^\d{4,4}-\d{2,2}-\d{2,2}[ ]\d{2,2}:\d{2,2}:\d{2,2}/
   },
   // 采血者
   drawer: {

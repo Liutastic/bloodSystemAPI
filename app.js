@@ -18,10 +18,12 @@ app.use(responseFormatter)
 const users = require('./routes/api/users')
 // 引入volunteer.js 路由
 const volunteers = require('./routes/api/volunteers')
+// 引入blood.js 路由
+const bloods = require('./routes/api/bloods')
 // 路由
 router.get('/', async ctx => {
   ctx.body = {
-    msg: 'hello'
+    msg: '检查你的url'
   }
 })
 
@@ -42,6 +44,8 @@ require('./config/passport')(passport)
 // 配置路由地址
 router.use('/api/user', users)
 router.use('/api/volunteer', volunteers)
+router.use('/api/blood', bloods)
+// router.use('/api/blood', bloods)
 
 // 配置路由
 app.use(router.routes()).use(router.allowedMethods())
