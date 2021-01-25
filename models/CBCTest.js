@@ -3,7 +3,7 @@ const formatDate = require('../utils/dateFormat').formatDate
 
 const Schema = mongoose.Schema
 mongoose.set('useFindAndModify', false)
-const date = format(formatDate(new Date(), true))
+const date = formatDate(new Date(), true)
 
 const CBCSchema = new Schema({
   itemId: {

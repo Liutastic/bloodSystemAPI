@@ -20,6 +20,8 @@ const users = require('./routes/api/users')
 const volunteers = require('./routes/api/volunteers')
 // 引入blood.js 路由
 const bloods = require('./routes/api/bloods')
+// 引入CBCTest.js路由
+const CBCTests = require('./routes/api/CBCTests')
 // 路由
 router.get('/', async ctx => {
   ctx.body = {
@@ -45,6 +47,7 @@ require('./config/passport')(passport)
 router.use('/api/user', users)
 router.use('/api/volunteer', volunteers)
 router.use('/api/blood', bloods)
+router.use('/api/cbctest', CBCTests)
 // router.use('/api/blood', bloods)
 
 // 配置路由
