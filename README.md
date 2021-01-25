@@ -1,1 +1,1 @@
->>> node.js + koa + mongodb 实现无偿献血管理系统
+> node.js + koa2 + mongodb 实现无偿献血管理系统
