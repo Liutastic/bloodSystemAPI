@@ -9,6 +9,8 @@ const Volunteer = require('../../models/Volunteer')
 const validateBloodInput = require('../../validation/blood')
 const { findById } = require('../../models/Blood')
 
+// passport 验证, 放在路由参数内
+// passport.authenticate('jwt', { session: false }), 
 
 /**
  * @route GET /api/blood/test
@@ -27,7 +29,6 @@ router.get('/test', async ctx => {
  * @description 添加一个血袋
  * @access public
  */
-//passport.authenticate('jwt', { session: false }), 
 router.post('/add', async ctx => {
   const { errors, isValid } = validateBloodInput(ctx.request.body)
   const { userId, bloodVolume, drawDate, drawer, shelfLife, isQualified, remark } = ctx.request.body
@@ -66,6 +67,34 @@ router.post('/add', async ctx => {
       console.log(err)
     })
   // console.log(volunteer)
+})
+
+/**
+ * @description 查询血袋
+ * @route /api/blood/page
+ * @access private
+ */
+router.get('/page', async ctx => {
+  const query = ctx.request.query
+  // 模糊查询正则
+  console.log('query', query)
+  const findResult = await Blood.aggregate([
+    {
+      $lookup: {
+        from: 'volunteers',
+        localField: 'volunteerId',
+        foreignField: '_id',
+        as: 'volunteer'
+      }
+    }
+  ])
+  findResult.forEach(ele => {
+    ele.volunteer = ele.volunteer[0]
+    ele.bloodType = ele.volunteer.bloodType
+  })
+  ctx.status = 200
+  ctx.body = findResult
+  // console.log('findResult', findResult);
 })
 
 module.exports = router.routes()

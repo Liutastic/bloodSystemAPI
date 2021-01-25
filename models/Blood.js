@@ -5,7 +5,7 @@ mongoose.set('useFindAndModify', false)
 
 const BloodSchema = new Schema({
   // 此处需要关联志愿者获取志愿者id和志愿者的血型
-  volunteer: {
+  volunteerId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Volunteer"
   },
