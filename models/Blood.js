@@ -34,9 +34,9 @@ const BloodSchema = new Schema({
   },
   // 是否合格
   isQualified: {
-    type: Boolean,
+    type: Number,
     required: true,
-    default: true
+    default: 1
   },
   remark: {
     type: String,
@@ -52,7 +52,7 @@ const BloodSchema = new Schema({
   createdAt: {
     type: String,
     required: false, 
-    default: dateFormat(new Date())
+    default: dateFormat(new Date(), true)
   }
 })
 

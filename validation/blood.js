@@ -13,14 +13,14 @@ module.exports = function validateBloodInput(data) {
   data.remark = !data.remark ? '' : data.remark
 
   if(data.bloodVolume === 0) {
-    errros.msg = '请输入血袋的血量'
+    errors.msg = '请输入血袋的血量'
   }
 
   if(!data.drawDate) {
     errors.msg = '请输入献血日期'
   }
 
-  if(!drawer) {
+  if(!data.drawer) {
     errors.msg = '请输入采血人姓名'
   }
 
