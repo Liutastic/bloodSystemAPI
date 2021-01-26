@@ -45,13 +45,18 @@ const BloodSchema = new Schema({
   },
   isDelete: {
     type: Number,
-    required: false, 
+    required: false,
     select: false,
     default: 0
   },
+  expireDate: {
+    type: String,
+    require: false,
+
+  },
   createdAt: {
     type: String,
-    required: false, 
+    required: false,
     default: dateFormat(new Date(), true)
   }
 })

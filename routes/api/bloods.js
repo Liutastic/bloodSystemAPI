@@ -1,9 +1,11 @@
 const Router = require('koa-router')
 const passport = require('koa-passport')
 const router = new Router()
+const mongoose = require('mongoose')
 
 const Blood = require('../../models/Blood')
 const Volunteer = require('../../models/Volunteer')
+const dateOperate = require('../../utils/dateFormat').dateOperate
 
 // 引入校验规则
 const validateBloodInput = require('../../validation/blood')
@@ -31,7 +33,7 @@ router.get('/test', async ctx => {
  */
 router.post('/add', async ctx => {
   const { errors, isValid } = validateBloodInput(ctx.request.body)
-  const { userId, bloodVolume, drawDate, drawer, shelfLife, isQualified, remark } = ctx.request.body
+  const { volunteerId, bloodVolume, drawDate, drawer, shelfLife, isQualified, remark } = ctx.request.body
   if (!isValid) {
     ctx.status = 400
     ctx.body = errors
@@ -39,14 +41,14 @@ router.post('/add', async ctx => {
   }
   // console.log(body.userId)
   // 先通过志愿者id找到志愿者 然后再把志愿者id存到血袋内实现关联
-  if (!userId) {
+  if (!volunteerId) {
     ctx.status = 400
     ctx.body = {
       msg: '该志愿者不存在, 请添加志愿者'
     }
     return
   }
-  const volunteer = await Volunteer.findById(userId)
+  const volunteer = await Volunteer.findById(volunteerId)
   // 如何判断血袋重复性?
   const newBlood = new Blood({
     bloodVolume,
@@ -56,7 +58,8 @@ router.post('/add', async ctx => {
     shelfLife,
     isQualified,
     remark,
-    volunteer: userId
+    volunteerId: userId,
+    expireDate: dateOperate(drawDate, shelfLife, true)
   })
   await newBlood
     .save()
@@ -77,24 +80,58 @@ router.post('/add', async ctx => {
 router.get('/page', async ctx => {
   const query = ctx.request.query
   // 模糊查询正则
-  console.log('query', query)
-  const findResult = await Blood.aggregate([
-    {
-      $lookup: {
-        from: 'volunteers',
-        localField: 'volunteerId',
-        foreignField: '_id',
-        as: 'volunteer'
+  // console.log('query', query)
+  try {
+    const findResult = await Blood.aggregate([
+      {
+        $lookup: {
+          from: 'volunteers',
+          localField: 'volunteerId',
+          foreignField: '_id',
+          as: 'volunteer'
+        }
+      },
+      {
+        $match: {
+          volunteerId: mongoose.Types.ObjectId(query.volunteerId)
+          
+        }
       }
+    ])
+    ctx.status = 200
+    ctx.body = findResult
+  } catch (err) {
+    ctx.status = 400
+    ctx.body = {
+      msg: '无该志愿者信息, 请添加志愿者'
     }
-  ])
-  findResult.forEach(ele => {
-    ele.volunteer = ele.volunteer[0]
-    ele.bloodType = ele.volunteer.bloodType
-  })
-  ctx.status = 200
-  ctx.body = findResult
+  }
+  // const findResult = await Blood.find({volunteerId: mongoose.Types.ObjectId(query.volunteerId)})
+  // findResult.forEach(ele => {
+  //   ele.volunteer = ele.volunteer[0]
+  //   ele.bloodType = ele.volunteer.bloodType
+  // })
+
   // console.log('findResult', findResult);
+})
+
+/**
+ * @route api/blood/get
+ * @access private
+ * @description 查看志愿者献血记录(血袋)
+ */
+router.get('/get', async ctx => {
+  const body = ctx.request.body
+  try {
+    const findResult = await Blood.find({volunteerId: mongoose.Types.ObjectId(query.volunteerId)})
+    ctx.status = 200
+    ctx.body = findResult
+  } catch (err) { 
+    ctx.status = 400
+    ctx.body = {
+      msg: '无该志愿者信息'
+    }
+  }
 })
 
 module.exports = router.routes()
