@@ -5,7 +5,9 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "serve": "nodemon app.js"
+    "serve": "nodemon app.js",
+    "babelbuild": "babel ./config ./middlewares ./models ./routes ./utils ./validation app.js --out-dir dist",
+    "babelServe": "nodemon dist/app.js"
   },
   "author": "Liutastic",
   "license": "ISC",

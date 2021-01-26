@@ -15,10 +15,16 @@ const CBCSchema = new Schema({
     required: false
   },
   limit: {
-    type: Number
+    type: String,
+    // set(val) {
+    //   return Number(val.toFixed(2))
+    // }
   },
   ceil: {
-    type: Number
+    type: String,
+    // set(val) {
+    //   return Number(val.toFixed(2))
+    // }
   },
   unit: {
     type: String
