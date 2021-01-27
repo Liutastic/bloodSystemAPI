@@ -106,13 +106,6 @@ router.get('/page', async ctx => {
       msg: '无该志愿者信息, 请添加志愿者'
     }
   }
-  // const findResult = await Blood.find({volunteerId: mongoose.Types.ObjectId(query.volunteerId)})
-  // findResult.forEach(ele => {
-  //   ele.volunteer = ele.volunteer[0]
-  //   ele.bloodType = ele.volunteer.bloodType
-  // })
-
-  // console.log('findResult', findResult);
 })
 
 /**

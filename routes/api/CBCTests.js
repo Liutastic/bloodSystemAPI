@@ -61,7 +61,7 @@ router.post('/add', async ctx => {
  */
 router.get('/page', async ctx => {
   const query = ctx.request.query
-  
+
   console.log('query', query)
   // const filter = {
   //   $or: [
@@ -100,7 +100,7 @@ router.post('/update', async ctx => {
   delete body.id
   try {
     const updateResult = await CBCTest.findByIdAndUpdate(id, body)
-    if(updateResult) {
+    if (updateResult) {
       ctx.status = 200
       ctx.body = updateResult
     } else {
@@ -111,14 +111,14 @@ router.post('/update', async ctx => {
         msg: '修改失败'
       }
     }
-  }catch (err) {
+  } catch (err) {
 
   }
 })
 
 /**
  * @route /api/cbctest/delete
- * @description 删除一个志愿者
+ * @description 删除一个校验项
  * @access private
  */
 // passport.authenticate('jwt', { session: false }),
@@ -126,21 +126,17 @@ router.post('/delete', async ctx => {
   const id = ctx.request.body.id
   // 当查找条件(id)存在的时候才执行修改操作
   try {
-    const updateResult = await CBCTest.findByIdAndUpdate(id, {isDelete: 1})
-    if (updateResult) {
-      // updateResult.createdAt = formatDate(updateResult.createdAt, true)
-      ctx.status = 200
-      ctx.body = updateResult
-    } else {
-      ctx.status = 400
-      ctx.response.status = 400
-      ctx.response.message = '数据库中无该条数据'
-      ctx.body = {
-        msg: '删除失败'
-      }
-    }
+    const updateResult = await CBCTest.findByIdAndUpdate(id, { isDelete: 1 })
+    // updateResult.createdAt = formatDate(updateResult.createdAt, true)
+    ctx.status = 200
+    ctx.body = updateResult
   } catch (err) {
-    
+    ctx.status = 400
+    ctx.response.status = 400
+    ctx.response.message = '数据库中无该条数据'
+    ctx.body = {
+      msg: '删除失败'
+    }
   }
 })
 
