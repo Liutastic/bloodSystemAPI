@@ -1,4 +1,5 @@
 const koa = require('koa')
+const cors = require('koa2-cors')
 const Router = require('koa-router')
 const mongoose = require('mongoose')
 const bodyParser = require('koa-bodyparser')
@@ -11,7 +12,7 @@ const responseFormatter = require('./middlewares/responseFormatter')
 
 const app = new koa()
 const router = new Router()
-
+app.use(cors())
 app.use(bodyParser())
 app.use(responseFormatter)
 // 引入users.js路由
