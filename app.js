@@ -4,14 +4,20 @@ const Router = require('koa-router')
 const mongoose = require('mongoose')
 const bodyParser = require('koa-bodyparser')
 const passport = require('koa-passport')
+const koaSession = require('koa-session')
 
 const db = require('./config/keys').mongoURI
+const sessionConfig = require('./config/keys').sessionConfig
+const sessionKey = require('./config/keys').sessionKey
 const responseFormatter = require('./middlewares/responseFormatter')
 
 // 实例化koa
 
 const app = new koa()
 const router = new Router()
+const session = koaSession(sessionConfig, app)
+app.keys = sessionKey
+app.use(session)
 app.use(cors())
 app.use(bodyParser())
 app.use(responseFormatter)
@@ -23,6 +29,8 @@ const volunteers = require('./routes/api/volunteers')
 const bloods = require('./routes/api/bloods')
 // 引入CBCTest.js路由
 const CBCTests = require('./routes/api/CBCTests')
+// 引入验证码路由
+const vcode = require('./routes/api/vcode')
 // 路由
 router.get('/', async ctx => {
   ctx.body = {
@@ -49,6 +57,7 @@ router.use('/api/user', users)
 router.use('/api/volunteer', volunteers)
 router.use('/api/blood', bloods)
 router.use('/api/cbctest', CBCTests)
+router.use('/api/vcode', vcode)
 // router.use('/api/blood', bloods)
 
 // 配置路由
