@@ -3,7 +3,7 @@ const formatDate = require('../utils/dateFormat').formatDate
 
 const Schema = mongoose.Schema
 mongoose.set('useFindAndModify', false)
-const date = format(new Date(), true)
+const date = formatDate(new Date(), true)
 
 const FileSchema = new Schema({
   fileName: {

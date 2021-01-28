@@ -4,6 +4,7 @@ const path = require('path')
 const passport = require('koa-passport')
 const mongoose = require('mongoose')
 
+const File = require('../../models/File')
 
 const handleUploadImg = require('../../utils/fileutils').handleUploadImg
 
@@ -30,10 +31,24 @@ router.get('/test', async ctx => {
  * @access private
  */
 router.post('/upload', async ctx => {
-  let url = handleUploadImg(ctx).url
-  ctx.body = {
-    url
-  }
+  let file = handleUploadImg(ctx)
+  const newFile = new File({
+    fileName: file.name,
+    filePath: file.url,
+    fileType: file.type,
+    fileSize: file.size
+  })
+  await newFile
+    .save()
+    .then(file => {
+      ctx.body = {
+        url: file.filePath
+      }
+    })
+    .catch(err => {
+      console.log(err)
+    })
+
 })
 
 module.exports = router.routes()
