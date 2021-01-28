@@ -7,6 +7,7 @@ const koaBody = require('koa-body')
 const passport = require('koa-passport')
 const koaSession = require('koa-session')
 const koaStatic = require('koa-static')
+const error = require('koa-json-error')
 const path = require('path')
 
 const db = require('./config/keys').mongoURI
@@ -15,6 +16,7 @@ const sessionKey = require('./config/keys').sessionKey
 const uploadConfig = require('./config/keys').uploadConfig
 const staticConfig = require('./config/keys').staticConfig
 const responseFormatter = require('./middlewares/responseFormatter')
+const errorHandler = require('./middlewares/errorHandler')
 
 // 实例化koa
 
@@ -22,6 +24,7 @@ const app = new koa()
 const router = new Router()
 const session = koaSession(sessionConfig, app)
 app.keys = sessionKey
+app.use(error(errorHandler))
 app.use(koaStatic(path.join(__dirname+'/public')), staticConfig)
 app.use(session)
 app.use(cors())
