@@ -7,7 +7,7 @@ function formatDate(date, isCurrent = false) {
 }
 
 function formatDateRandom(date) {
-  return momenet(date).format(`YYYYMMDDHHmmss`)
+  return moment(date).format(`YYYYMMDDHHmmss`)
 }
 
 function formatDateZn(date, isAcc = false) {
