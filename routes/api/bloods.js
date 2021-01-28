@@ -73,7 +73,7 @@ router.post('/add', async ctx => {
 })
 
 /**
- * @description 查询血袋
+ * @description 通过志愿者id查询血袋
  * @route /api/blood/page
  * @access private
  */
