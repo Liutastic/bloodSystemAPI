@@ -1,7 +1,7 @@
-const dateFormatRandom = require('./dateFormat').formatDateRandom
+const dateFormatRandom = require('../../utils/dateFormat').formatDateRandom
 const fs = require('fs')
 const path = require('path')
-const baseUrl = require('../config/keys').baseUrl
+const baseUrl = require('../../config/keys').baseUrl
 
 /**
  * @description 使用时间戳生成时间名字

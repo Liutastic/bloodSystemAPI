@@ -6,7 +6,7 @@ const mongoose = require('mongoose')
 
 const File = require('../../models/File')
 
-const handleUploadImg = require('../../utils/fileutils').handleUploadImg
+const handleUploadImg = require('../handler/fileutils').handleUploadImg
 
 const baseUrl = require('../../config/keys').baseUrl
 const router = new Router()
