@@ -51,4 +51,86 @@ router.post('/upload', async ctx => {
 
 })
 
+/**
+ * @description 删除一个文件(逻辑删除)
+ * @access private
+ * @route /api/file/delete
+ */
+router.post('/delete', async ctx => {
+  const id = ctx.request.body.id
+  // 当查找条件(id)存在的时候才执行修改操作
+  try {
+    const updateResult = await File.findByIdAndUpdate(id, { isDelete: 1 })
+    if (updateResult) {
+      // updateResult.createdAt = formatDate(updateResult.createdAt, true)
+      ctx.status = 200
+      ctx.body = updateResult
+    } else {
+      ctx.status = 400
+      ctx.response.status = 400
+      ctx.response.message = '数据库中无该条数据'
+      ctx.body = {
+        msg: '删除失败'
+      }
+    }
+  } catch (err) {
+
+  }
+})
+
+/**
+ * @description 删除一个文件(永久删除)
+ * @access private
+ * @route /api/file/deleteperm
+ */
+router.post('/deleteperm', async ctx => {
+  const id = ctx.request.body.id
+  // 当查找条件(id)存在的时候才执行修改操作
+  try {
+    const updateResult = await File.findByIdAndDelete(id)
+    if (updateResult) {
+      // updateResult.createdAt = formatDate(updateResult.createdAt, true)
+      ctx.status = 200
+      ctx.body = updateResult
+    } else {
+      ctx.status = 400
+      ctx.response.status = 400
+      ctx.response.message = '数据库中无该条数据'
+      ctx.body = {
+        msg: '删除失败'
+      }
+    }
+  } catch (err) {
+
+  }
+})
+
+/**
+ * @route /api/file/page
+ * @description 查找所有的图片文件(分页)
+ * @access private
+ */
+router.get('/page', async ctx => {
+  try {
+    const query = ctx.request.query
+    let page = Number(query.page) ? Number(query.page) : 1
+    let size = Number(query.size) ? Number(query.size) : 9999
+    let skip = (page - 1) * size
+    const findResult = await File.find().skip(skip).limit(size)
+    const totalElement = await File.find().countDocuments()
+    ctx.status = 200
+    ctx.body = {
+      page: page,
+      content: findResult,
+      totalElement
+    }
+  } catch (err) {
+    ctx.status = 400
+    ctx.body = {
+      msg: '服务器出错'
+    }
+  }
+})
+
+
 module.exports = router.routes()
