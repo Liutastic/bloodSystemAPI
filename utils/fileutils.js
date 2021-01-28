@@ -29,6 +29,7 @@ function handleUploadImg (ctx) {
   reader.pipe(upStream)
   return {
     url: `${baseUrl}/avatar/${newFileName}`,
+    name: newFileName,
     size: Number((file.size / 1024).toFixed(0)),
     type: suffix
   }
