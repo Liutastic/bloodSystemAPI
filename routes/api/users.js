@@ -50,10 +50,11 @@ router.post('/register', async ctx => {
     ctx.body = { msg: '用户名已被占用' }
   } else {
     const newUser = new User({
+      avatar: ctx.request.body.avatar,
       username: ctx.request.body.username,
       password: ctx.request.body.password,
       phone: ctx.request.body.phone,
-    })
+    }) 
     // 对密码进行加密操作
     const psw = await encrypt(newUser.password)
     newUser.password = psw
@@ -71,14 +72,14 @@ router.post('/register', async ctx => {
   }
 })
 /**
- * @route POST /api/users/login
+ * @route POST /api/user/login
  * @description 登录接口, 返回token
  * @access public
  */
 router.post('/login', async ctx => {
 
   const { errors, isValid } = validateLoginInput(ctx.request.body)
-
+  console.log(ctx.request)
   if (!isValid) {
     ctx.status = 400
     ctx.body = errors
