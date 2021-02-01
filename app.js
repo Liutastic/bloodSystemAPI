@@ -45,6 +45,8 @@ const CBCTests = require('./routes/api/CBCTests')
 const vcode = require('./routes/api/vcode')
 // 引入上传文件路由
 const fileHandler = require('./routes/api/fileHandler')
+// 引入志愿者体检单phyexam.js路由
+const phyexam = require('./routes/api/phyExam')
 // 路由
 router.get('/', async ctx => {
   ctx.body = {
@@ -73,6 +75,7 @@ router.use('/api/blood', bloods)
 router.use('/api/cbctest', CBCTests)
 router.use('/api/vcode', vcode)
 router.use('/api/file', fileHandler)
+router.use('/api/phyexam', phyexam)
 // router.use('/api/blood', bloods)
 
 // 配置路由

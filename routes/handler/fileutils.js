@@ -23,7 +23,7 @@ function handleUploadImg (ctx) {
   
   let reader = fs.createReadStream(file.path)
   let newFileName = createFileName(suffix)
-  let uploadPath = path.join(__dirname, '../public/avatar/') + newFileName
+  let uploadPath = path.join(__dirname, '../../public/avatar/') + newFileName
   // 
   let upStream = fs.createWriteStream(uploadPath)
   reader.pipe(upStream)

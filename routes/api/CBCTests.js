@@ -48,10 +48,12 @@ router.post('/add', async ctx => {
     await newCBCTest
       .save()
       .then(cbc => {
+        // delete cbc.isDeleted
         ctx.body = cbc
       })
       .catch(err => { console.log(err) })
   }
+  // ctx.body = cbc
 })
 
 /**
