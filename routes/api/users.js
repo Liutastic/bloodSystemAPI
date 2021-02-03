@@ -54,14 +54,20 @@ router.post('/register', async ctx => {
       username: ctx.request.body.username,
       password: ctx.request.body.password,
       phone: ctx.request.body.phone,
-    }) 
+    })
     // 对密码进行加密操作
     const psw = await encrypt(newUser.password)
     newUser.password = psw
     await newUser
       .save()
       .then(user => {
-        ctx.body = user
+        ctx.body = {
+          id: user._id,
+          username: user.username,
+          phone: user.phone,
+          avatar: user.avatar,
+          createdAt: user.createdAt
+        }
       })
       .catch(err => {
         console.log(err)
