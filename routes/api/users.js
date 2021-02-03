@@ -2,6 +2,7 @@ const Router = require('koa-router')
 const router = new Router()
 const bcrypt = require('bcryptjs')
 const encrypt = require('../../utils/encryption').encrypt
+const decrypt = require('../../utils/encryption').decrypt
 const jwt = require('jsonwebtoken')
 const keys = require('../../config/keys')
 // const passsport = require('koa-passport')
@@ -96,10 +97,12 @@ router.post('/login', async ctx => {
   // console.log(ctx)
   const findResult = await User.find({ username: ctx.request.body.username })
   const user = findResult[0]
+  // const password = decrypt(ctx.request.body.password)
   const password = ctx.request.body.password
+  console.log(password)
 
   if (findResult.length === 0) {
-    ctx.status = 404
+    ctx.status = 400
     ctx.body = {
       msg: '用户不存在'
     }
@@ -114,7 +117,10 @@ router.post('/login', async ctx => {
       ctx.status = 200
       ctx.body = {
         success: true,
-        token: `Bearer ${token}`
+        token: `Bearer ${token}`,
+        username: findResult[0].username,
+        avatar: findResult[0].avatar,
+        phone: findResult[0].phone
       }
     } else {
       ctx.status = 400

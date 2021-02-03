@@ -25,11 +25,11 @@ const router = new Router()
 const session = koaSession(sessionConfig, app)
 app.keys = sessionKey
 app.use(error(errorHandler))
-app.use(koaStatic(path.join(__dirname+'/public')), staticConfig)
+app.use(koaStatic(path.join(__dirname + '/public')), staticConfig)
 app.use(session)
 app.use(cors())
-app.use(bodyParser())
 app.use(koaBody(uploadConfig))
+app.use(bodyParser())
 
 // 统一json数据返回格式
 app.use(responseFormatter)
@@ -49,8 +49,9 @@ const fileHandler = require('./routes/api/fileHandler')
 const phyexam = require('./routes/api/phyExam')
 // 路由
 router.get('/', async ctx => {
+  const query = ctx.request.query
   ctx.body = {
-    msg: '检查你的url'
+    query
   }
 })
 
