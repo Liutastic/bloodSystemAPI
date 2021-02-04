@@ -116,7 +116,6 @@ router.post('/login', async ctx => {
 
       ctx.status = 200
       ctx.body = {
-        success: true,
         token: `Bearer ${token}`,
         username: findResult[0].username,
         avatar: findResult[0].avatar,
