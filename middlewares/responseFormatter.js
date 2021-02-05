@@ -12,7 +12,7 @@ let responseFormatter = async (ctx, next) => {
       stamp: formatDate(new Date(), true),
       code: ctx.response.status,
       message: ctx.response.message,
-      content: ctx.body
+      data: ctx.body
     }
   } else {
     ctx.status = ctx.response.status
