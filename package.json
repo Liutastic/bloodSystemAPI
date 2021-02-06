@@ -12,9 +12,9 @@
   "author": "Liutastic",
   "license": "ISC",
   "dependencies": {
+    "aes-js": "^3.1.2",
     "axios": "^0.21.1",
     "bcryptjs": "^2.4.3",
-    "crypto": "^1.0.1",
     "crypto-js": "^4.0.0",
     "dayjs": "^1.10.3",
     "jsonwebtoken": "^8.5.1",

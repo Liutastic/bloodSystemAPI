@@ -8,6 +8,7 @@ const passport = require('koa-passport')
 const koaSession = require('koa-session')
 const koaStatic = require('koa-static')
 const error = require('koa-json-error')
+const CryptoJS = require('crypto-js')
 const path = require('path')
 
 const db = require('./config/keys').mongoURI
@@ -47,11 +48,31 @@ const vcode = require('./routes/api/vcode')
 const fileHandler = require('./routes/api/fileHandler')
 // 引入志愿者体检单phyexam.js路由
 const phyexam = require('./routes/api/phyExam')
+
+const key = CryptoJS.enc.Utf8.parse("Liutastic2333333");  //十六位十六进制数作为密钥
+const iv = CryptoJS.enc.Utf8.parse('Liutastic2333333');   //十六位十六进制数作为密钥偏移量
+
+function Encrypt (word) {
+  let srcs = CryptoJS.enc.Utf8.parse(word);
+  let encrypted = CryptoJS.AES.encrypt(srcs, key, { iv: iv, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7 });
+  return encrypted.ciphertext.toString().toUpperCase();
+}
+function Decrypt (word) {
+  let encryptedHexStr = CryptoJS.enc.Hex.parse(word);
+  let srcs = CryptoJS.enc.Base64.stringify(encryptedHexStr);
+  let decrypt = CryptoJS.AES.decrypt(srcs, key, { iv: iv, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7 });
+  let decryptedStr = decrypt.toString(CryptoJS.enc.Utf8);
+  return decryptedStr.toString();
+}
+
 // 路由
 router.get('/', async ctx => {
   const query = ctx.request.query
+  let text = query.text || ''
   ctx.body = {
-    query
+    message: Decrypt(text),
+    message2: Encrypt('wgnls')
+    // message: aesEncrypt(text, 'secret')
   }
 })
 

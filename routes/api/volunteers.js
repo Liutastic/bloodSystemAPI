@@ -1,5 +1,7 @@
 const Router = require('koa-router')
 const passport = require('koa-passport')
+const Encrypt = require('../../utils/encryption').Encrypt
+const Decrypt = require('../../utils/encryption').Decrypt
 // 引入时间格式化
 const formatDate = require('../../utils/dateFormat').formatDate
 const router = new Router()
@@ -7,9 +9,6 @@ const router = new Router()
 const Volunteer = require('../../models/Volunteer')
 // 引入validator校验规则
 const validateVolunteerInput = require('../../validation/volunteer')
-
-const handleIDNo = require('../../utils/handleReg').handleIDNo
-const { find } = require('../../models/Volunteer')
 
 /**
  * @route GET /api/volunteer/test
@@ -39,7 +38,7 @@ router.get('/page', async ctx => {
   let totalElement = findResult.length
   let length = findResult.length
   for (let i = 0; i < length; i++) {
-    findResult[i].IDNo = handleIDNo(findResult[i].IDNo)
+    findResult[i].IDNo = Encrypt(findResult[i].IDNo)
   }
   ctx.status = 200
   ctx.body = {
@@ -95,14 +94,23 @@ router.post('/add', async ctx => {
   }
 })
 /**
- * @route POST /api/volunteer/update
+ * @route POST /api/volunteer/edit
  * @description 修改一个志愿者
  * @access private
  */
 // passport.authenticate('jwt', { session: false }),
-router.post('/update', async ctx => {
-  const body = ctx.request.body
-  const id = ctx.request.body.id
+router.post('/edit', async ctx => {
+  let body = ctx.request.body
+  body.IDNo = Decrypt(body.IDNo)
+  // const body = {
+  //   address: ctx.request.body.address,
+  //   bloodType: ctx.request.body.bloodType,
+  //   name: ctx.request.body.name,
+  //   phone: ctx.request.body.phone,
+  //   remark: ctx.request.body.remark,
+  //   IDNo
+  // }
+  const id = ctx.request.body._id
   delete body.id
   // console.log('body', body)
   // 当查找条件(id)存在的时候才执行修改操作
