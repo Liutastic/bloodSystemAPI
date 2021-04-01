@@ -34,7 +34,7 @@ router.get('/page', async ctx => {
   let size = Number(query.size) ? Number(query.size) : 9999
   let searchKey = query.searchKey ? new RegExp(query.searchKey) : /[\s\S]*/
   let skip = (page - 1) * size
-  let findResult = await Volunteer.find({ $or: [{ IDNo: { $regex: searchKey } }, { name: { $regex: searchKey } }], isDelete: 0 }).skip(skip).limit(size)
+  let findResult = await Volunteer.find({ $or: [{ IDNo: { $regex: searchKey } }, { name: { $regex: searchKey } }], isDeleted: 0 }).skip(skip).limit(size)
   let totalElement = await Volunteer.find({ isDeleted: 0 }).countDocuments()
   let length = findResult.length
   for (let i = 0; i < length; i++) {
@@ -145,7 +145,7 @@ router.post('/delete', async ctx => {
   const id = ctx.request.body.id
   // 当查找条件(id)存在的时候才执行修改操作
   try {
-    const updateResult = await Volunteer.findByIdAndUpdate(id, { isDelete: 1 })
+    const updateResult = await Volunteer.findByIdAndUpdate(id, { isDeleted: 1 })
     if (updateResult) {
       // updateResult.createdAt = formatDate(updateResult.createdAt, true)
       ctx.status = 200
