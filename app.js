@@ -48,6 +48,8 @@ const vcode = require('./routes/api/vcode')
 const fileHandler = require('./routes/api/fileHandler')
 // 引入志愿者体检单phyexam.js路由
 const phyexam = require('./routes/api/phyExam')
+// 引入单位unit.js路由
+const units = require('./routes/api/unit')
 
 const key = CryptoJS.enc.Utf8.parse("Liutastic2333333");  //十六位十六进制数作为密钥
 const iv = CryptoJS.enc.Utf8.parse('Liutastic2333333');   //十六位十六进制数作为密钥偏移量
@@ -98,7 +100,7 @@ router.use('/api/cbctest', CBCTests)
 router.use('/api/vcode', vcode)
 router.use('/api/file', fileHandler)
 router.use('/api/phyexam', phyexam)
-// router.use('/api/blood', bloods)
+router.use('/api/unit', units)
 
 // 配置路由
 app.use(router.routes()).use(router.allowedMethods())
