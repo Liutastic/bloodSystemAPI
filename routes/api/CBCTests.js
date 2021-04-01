@@ -63,31 +63,18 @@ router.post('/add', async ctx => {
  */
 router.get('/page', async ctx => {
   const query = ctx.request.query
-
-  console.log('query', query)
-  // const filter = {
-  //   $or: [
-  //     {
-  //       itemId: {
-  //         $regex: `/${query.itemId? query.itemId: '[\s\S]*'}/`
-  //       }
-  //     },
-  //     {
-  //       itemName: {
-  //         $regex: `/${query.itemName? query.itemName: '[\s\S]*'}/`
-  //       }
-  //     }
-  //   ],
-  //   isDeleted: 0
-  // }
-  // console.log('filter', filter.$or.limit)
-  // const findResult = await CBCTest.find(filter)
-  const findResult = await CBCTest.find()
-
-  // console.log(findResult)
-  // console.log(filter.$or);
+  let page = Number(query.page) ? Number(query.page) : 1
+  let size = Number(query.size) ? Number(query.size) : 9999
+  let searchKey = query.searchKey ? new RegExp(query.searchKey) : /[\s\S]*/
+  let skip = (page - 1) * size
+  let findResult = await CBCTest.find({ $or: [{ itemId: { $regex: searchKey } }, { itemName: { $regex: searchKey } }], isDeleted: 0 }).skip(skip).limit(size)
+  let totalElement = await CBCTest.find().where({ isDeleted: 0 }).countDocuments()
   ctx.status = 200
-  ctx.body = findResult
+  ctx.body = {
+    size,
+    totalElement,
+    content: findResult
+  }
 })
 
 /**

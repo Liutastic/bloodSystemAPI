@@ -40,15 +40,15 @@ const VolunteerSchema = new Schema({
     required: false,
     maxlength: 100
   },
-  isDelete: {
+  isDeleted: {
     type: Number,
-    required: false, 
+    required: false,
     select: false,
     default: 0
   },
   createdAt: {
     type: String,
-    required: false, 
+    required: false,
     default: date
   }
 })

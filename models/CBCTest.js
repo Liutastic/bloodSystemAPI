@@ -8,11 +8,11 @@ const date = formatDate(new Date(), true)
 const CBCSchema = new Schema({
   itemId: {
     type: String,
-    required: false
+    required: true
   },
   itemName: {
     type: String,
-    required: false
+    required: true
   },
   limit: {
     type: String,

@@ -79,7 +79,7 @@ router.get('/', async ctx => {
 // 链接数据库
 mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
-    console.log('Mongodb connected...')
+    console.log('Mongodb is connected...')
   })
   .catch(err => {
     console.log(err)
